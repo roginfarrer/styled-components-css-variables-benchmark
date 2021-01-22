@@ -1,5 +1,6 @@
 {
-  "name": "stitches-benchmark",
+  "name": "styled-components-benchmark",
+  "private": true,
   "version": "1.0.0",
   "description": "",
   "keywords": [],

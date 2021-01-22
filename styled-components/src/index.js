@@ -1,75 +1,292 @@
 import React from 'react';
-import scStyled from 'styled-components';
-import { renderToString } from 'react-dom/server';
-import { createStyled } from '@stitches/react';
-
-const { styled: stitchesStyled } = createStyled({});
+import styled, { ThemeProvider } from 'styled-components';
+import { renderToString as render } from 'react-dom/server';
+import './index.css';
 
 const LOOP = 2000;
 
+const theme = {
+  colors: {
+    blue40: 'teal',
+    red40: 'orange',
+  },
+};
+
+const AppThemeProvider = (props) => {
+  return <ThemeProvider theme={theme} {...props} />;
+};
+
 /**
- * SETUP: STYLED COMPONENTS
+ * SETUP: STYLED COMPONENTS - VANILLA
  */
-const ScBaseComponent = scStyled.h1({
-  color: 'blue',
-  padding: '1rem',
+const ScBaseComponent = styled.h1({
+  padding: '5rem',
+  color: ({ theme }) => theme?.colors?.blue40,
 });
 
-const ScOverrideBaseComponent = scStyled(ScBaseComponent)({
-  color: 'red',
+const ScOverrideBaseComponent = styled(ScBaseComponent)({
+  color: ({ theme }) => theme?.colors?.red40,
   paddingTop: '5rem',
 });
 
-const ScDynamicComponent = scStyled.div((props) => ({
+const ScDynamicComponent = styled.div((props) => ({
   opacity: props.disabled ? 0.5 : 1,
+  color: ({ theme }) => theme?.colors?.red40,
 }));
 
+const ScTest3 = () => {
+  return (
+    <AppThemeProvider>
+      <ScBaseComponent>Hello Test</ScBaseComponent>
+    </AppThemeProvider>
+  );
+};
+
 const ScTest1 = () => {
-  return <ScOverrideBaseComponent>Hello Test</ScOverrideBaseComponent>;
+  return (
+    <AppThemeProvider>
+      <ScOverrideBaseComponent>Hello Test</ScOverrideBaseComponent>
+    </AppThemeProvider>
+  );
 };
 
 const ScTest2 = () => {
   return (
-    <div>
-      <ScDynamicComponent disabled>Hello Test</ScDynamicComponent>
-      <ScDynamicComponent disabled={false}>Hello Test</ScDynamicComponent>
-    </div>
+    <AppThemeProvider>
+      <div>
+        <ScDynamicComponent disabled>Hello Test</ScDynamicComponent>
+        <ScDynamicComponent disabled={false}>Hello Test</ScDynamicComponent>
+      </div>
+    </AppThemeProvider>
+  );
+};
+
+const ScTest4 = () => {
+  return (
+    <AppThemeProvider>
+      <ScDynamicComponent>
+        <ScDynamicComponent>
+          <ScDynamicComponent>
+            <ScDynamicComponent>
+              <ScDynamicComponent>
+                <ScDynamicComponent>
+                  <ScDynamicComponent>
+                    <ScDynamicComponent>
+                      <ScDynamicComponent>
+                        <ScDynamicComponent>
+                          <ScDynamicComponent>
+                            <ScDynamicComponent>
+                              <ScDynamicComponent>
+                                <ScDynamicComponent>
+                                  <ScDynamicComponent>
+                                    <ScDynamicComponent>
+                                      <ScDynamicComponent>
+                                        <ScDynamicComponent>
+                                          <ScDynamicComponent>
+                                            <ScDynamicComponent>
+                                              <ScDynamicComponent>
+                                                <ScDynamicComponent>
+                                                  <ScDynamicComponent>
+                                                    <ScDynamicComponent>
+                                                      <ScDynamicComponent>
+                                                        <ScDynamicComponent>
+                                                          <ScDynamicComponent>
+                                                            <ScDynamicComponent>
+                                                              <ScDynamicComponent>
+                                                                <ScDynamicComponent>
+                                                                  <ScDynamicComponent>
+                                                                    <ScDynamicComponent>
+                                                                      <ScDynamicComponent>
+                                                                        <ScDynamicComponent>
+                                                                          <ScDynamicComponent>
+                                                                            <ScDynamicComponent>
+                                                                              <ScDynamicComponent>
+                                                                                <ScDynamicComponent>
+                                                                                  <ScDynamicComponent>
+                                                                                    <ScDynamicComponent>
+                                                                                      <ScDynamicComponent>
+                                                                                        <ScDynamicComponent>
+                                                                                          <ScDynamicComponent />
+                                                                                        </ScDynamicComponent>
+                                                                                      </ScDynamicComponent>
+                                                                                    </ScDynamicComponent>
+                                                                                  </ScDynamicComponent>
+                                                                                </ScDynamicComponent>
+                                                                              </ScDynamicComponent>
+                                                                            </ScDynamicComponent>
+                                                                          </ScDynamicComponent>
+                                                                        </ScDynamicComponent>
+                                                                      </ScDynamicComponent>
+                                                                    </ScDynamicComponent>
+                                                                  </ScDynamicComponent>
+                                                                </ScDynamicComponent>
+                                                              </ScDynamicComponent>
+                                                            </ScDynamicComponent>
+                                                          </ScDynamicComponent>
+                                                        </ScDynamicComponent>
+                                                      </ScDynamicComponent>
+                                                    </ScDynamicComponent>
+                                                  </ScDynamicComponent>
+                                                </ScDynamicComponent>
+                                              </ScDynamicComponent>
+                                            </ScDynamicComponent>
+                                          </ScDynamicComponent>
+                                        </ScDynamicComponent>
+                                      </ScDynamicComponent>
+                                    </ScDynamicComponent>
+                                  </ScDynamicComponent>
+                                </ScDynamicComponent>
+                              </ScDynamicComponent>
+                            </ScDynamicComponent>
+                          </ScDynamicComponent>
+                        </ScDynamicComponent>
+                      </ScDynamicComponent>
+                    </ScDynamicComponent>
+                  </ScDynamicComponent>
+                </ScDynamicComponent>
+              </ScDynamicComponent>
+            </ScDynamicComponent>
+          </ScDynamicComponent>
+        </ScDynamicComponent>
+      </ScDynamicComponent>
+    </AppThemeProvider>
   );
 };
 
 /**
- * SETUP: STITCHES
+ * SETUP: STYLED COMPONENTS - CSS Variables
  */
-const StitchesBaseComponent = stitchesStyled.h1({
-  color: 'blue',
-  padding: '1rem',
+const VarsBaseComponent = styled.h1({
+  padding: '5rem',
+  color: 'var(--color-blue40)',
 });
 
-const StitchesOverrideBaseComponent = stitchesStyled(StitchesBaseComponent, {
-  color: 'red',
+const VarsOverrideBaseComponent = styled(ScBaseComponent)({
+  color: 'var(--color-red40)',
   paddingTop: '5rem',
 });
 
-const StitchesDynamicComponent = scStyled.div({
-  variants: {
-    variant: {
-      muted: {
-        opacity: 0.5,
-      },
-    },
-  },
-});
+const VarsDynamicComponent = styled.div((props) => ({
+  opacity: props.disabled ? 0.5 : 1,
+  color: 'var(--color-red40)',
+}));
 
-const StitchesTest1 = () => {
-  return <StitchesOverrideBaseComponent>Hello Test</StitchesOverrideBaseComponent>;
+const VarsTest3 = () => {
+  return (
+    <AppThemeProvider>
+      <VarsBaseComponent>Hello Test</VarsBaseComponent>
+    </AppThemeProvider>
+  );
 };
 
-const StitchesTest2 = () => {
+const VarsTest1 = () => {
   return (
-    <div>
-      <StitchesDynamicComponent variant="muted">Hello Test</StitchesDynamicComponent>
-      <StitchesDynamicComponent>Hello Test</StitchesDynamicComponent>
-    </div>
+    <AppThemeProvider>
+      <VarsOverrideBaseComponent>Hello Test</VarsOverrideBaseComponent>
+    </AppThemeProvider>
+  );
+};
+
+const VarsTest2 = () => {
+  return (
+    <AppThemeProvider>
+      <div>
+        <VarsDynamicComponent variant="muted">Hello Test</VarsDynamicComponent>
+        <VarsDynamicComponent>Hello Test</VarsDynamicComponent>
+      </div>
+    </AppThemeProvider>
+  );
+};
+
+const VarsTest4 = () => {
+  return (
+    <AppThemeProvider>
+      <VarsDynamicComponent>
+        <VarsDynamicComponent>
+          <VarsDynamicComponent>
+            <VarsDynamicComponent>
+              <VarsDynamicComponent>
+                <VarsDynamicComponent>
+                  <VarsDynamicComponent>
+                    <VarsDynamicComponent>
+                      <VarsDynamicComponent>
+                        <VarsDynamicComponent>
+                          <VarsDynamicComponent>
+                            <VarsDynamicComponent>
+                              <VarsDynamicComponent>
+                                <VarsDynamicComponent>
+                                  <VarsDynamicComponent>
+                                    <VarsDynamicComponent>
+                                      <VarsDynamicComponent>
+                                        <VarsDynamicComponent>
+                                          <VarsDynamicComponent>
+                                            <VarsDynamicComponent>
+                                              <VarsDynamicComponent>
+                                                <VarsDynamicComponent>
+                                                  <VarsDynamicComponent>
+                                                    <VarsDynamicComponent>
+                                                      <VarsDynamicComponent>
+                                                        <VarsDynamicComponent>
+                                                          <VarsDynamicComponent>
+                                                            <VarsDynamicComponent>
+                                                              <VarsDynamicComponent>
+                                                                <VarsDynamicComponent>
+                                                                  <VarsDynamicComponent>
+                                                                    <VarsDynamicComponent>
+                                                                      <VarsDynamicComponent>
+                                                                        <VarsDynamicComponent>
+                                                                          <VarsDynamicComponent>
+                                                                            <VarsDynamicComponent>
+                                                                              <VarsDynamicComponent>
+                                                                                <VarsDynamicComponent>
+                                                                                  <VarsDynamicComponent>
+                                                                                    <VarsDynamicComponent>
+                                                                                      <VarsDynamicComponent>
+                                                                                        <VarsDynamicComponent>
+                                                                                          <VarsDynamicComponent />
+                                                                                        </VarsDynamicComponent>
+                                                                                      </VarsDynamicComponent>
+                                                                                    </VarsDynamicComponent>
+                                                                                  </VarsDynamicComponent>
+                                                                                </VarsDynamicComponent>
+                                                                              </VarsDynamicComponent>
+                                                                            </VarsDynamicComponent>
+                                                                          </VarsDynamicComponent>
+                                                                        </VarsDynamicComponent>
+                                                                      </VarsDynamicComponent>
+                                                                    </VarsDynamicComponent>
+                                                                  </VarsDynamicComponent>
+                                                                </VarsDynamicComponent>
+                                                              </VarsDynamicComponent>
+                                                            </VarsDynamicComponent>
+                                                          </VarsDynamicComponent>
+                                                        </VarsDynamicComponent>
+                                                      </VarsDynamicComponent>
+                                                    </VarsDynamicComponent>
+                                                  </VarsDynamicComponent>
+                                                </VarsDynamicComponent>
+                                              </VarsDynamicComponent>
+                                            </VarsDynamicComponent>
+                                          </VarsDynamicComponent>
+                                        </VarsDynamicComponent>
+                                      </VarsDynamicComponent>
+                                    </VarsDynamicComponent>
+                                  </VarsDynamicComponent>
+                                </VarsDynamicComponent>
+                              </VarsDynamicComponent>
+                            </VarsDynamicComponent>
+                          </VarsDynamicComponent>
+                        </VarsDynamicComponent>
+                      </VarsDynamicComponent>
+                    </VarsDynamicComponent>
+                  </VarsDynamicComponent>
+                </VarsDynamicComponent>
+              </VarsDynamicComponent>
+            </VarsDynamicComponent>
+          </VarsDynamicComponent>
+        </VarsDynamicComponent>
+      </VarsDynamicComponent>
+    </AppThemeProvider>
   );
 };
 
@@ -80,80 +297,91 @@ let start;
  */
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  scStyled.div({
-    padding: x + 'px',
+  styled.div({
+    color: ({ theme }) => theme.colors.blue[40],
   });
 }
-const ScDefineUnique = performance.now() - start;
+const ScDefineThemed = performance.now() - start;
 
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  scStyled.div({
-    color: 'red',
-  });
+  render(<ScTest3 />);
 }
-const ScDefineSame = performance.now() - start;
+const ScConsumeBase = performance.now() - start;
 
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  renderToString(<ScTest1 />);
+  render(<ScTest1 />);
 }
-const ScConsumeStatic = performance.now() - start;
+const ScConsumeOveridden = performance.now() - start;
 
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  renderToString(<ScTest2 />);
+  render(<ScTest2 />);
 }
 const ScConsumeDynamic = performance.now() - start;
 
+start = performance.now();
+for (let x = 0; x < LOOP; x++) {
+  render(<ScTest4 />);
+}
+const ScConsumeDeepTree = performance.now() - start;
+
 /**
- * RUN: STITCHES
+ * RUN: STYLED COMPONENTS - CSS VARIABLES
  */
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  stitchesStyled.div({
-    padding: x + 'px',
+  styled.div({
+    padding: 'var(--colors-blue40)',
   });
 }
-const StitchesDefineUnique = performance.now() - start;
+const VarsDefineThemed = performance.now() - start;
 
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  stitchesStyled.div({
-    color: 'red',
-  });
+  render(<VarsTest3 />);
 }
-const StitchesDefineSame = performance.now() - start;
+const VarsConsumeBase = performance.now() - start;
 
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  renderToString(<StitchesTest1 />);
+  render(<VarsTest1 />);
 }
-const StitchesConsumeStatic = performance.now() - start;
+const VarsConsumeOveridden = performance.now() - start;
 
 start = performance.now();
 for (let x = 0; x < LOOP; x++) {
-  renderToString(<StitchesTest2 />);
+  render(<VarsTest2 />);
 }
-const StitchesConsumeDynamic = performance.now() - start;
+const VarsConsumeDynamic = performance.now() - start;
+
+start = performance.now();
+for (let x = 0; x < LOOP; x++) {
+  render(<VarsTest4 />);
+}
+const VarsConsumeDeepTree = performance.now() - start;
 
 console.table({
   'STYLED-COMPONENTS': {
-    'define unique': ScDefineUnique,
-    'define same': ScDefineSame,
-    'consume static': ScConsumeStatic,
-    'consume dynamic': ScConsumeDynamic,
+    'define themed': ScDefineThemed,
+    'render themed': ScConsumeBase,
+    'render overidden': ScConsumeOveridden,
+    'render dynamic props': ScConsumeDynamic,
+    'deeply nested tree': ScConsumeDeepTree,
   },
-  STITCHES: {
-    'define unique': StitchesDefineUnique,
-    'define same': StitchesDefineSame,
-    'consume static': StitchesConsumeStatic,
-    'consume dynamic': StitchesConsumeDynamic,
+  'STYLED-COMPONENTS + CSS VARS': {
+    'define themed': VarsDefineThemed,
+    'render themed': VarsConsumeBase,
+    'render overidden': VarsConsumeOveridden,
+    'render dynamic props': VarsConsumeDynamic,
+    'deeply nested tree': VarsConsumeDeepTree,
   },
-  'STITCHES PERF': {
-    'define unique': Math.floor((ScDefineUnique / StitchesDefineUnique) * 100) / 100 + 'x',
-    'define same': Math.floor((ScDefineSame / StitchesDefineSame) * 100) / 100 + 'x',
-    'consume static': Math.floor((ScConsumeStatic / StitchesConsumeStatic) * 100) / 100 + 'x',
-    'consume dynamic': Math.floor((ScConsumeDynamic / StitchesConsumeDynamic) * 100) / 100 + 'x',
+  Compare: {
+    'define themed': Math.floor((ScDefineThemed / VarsDefineThemed) * 100) / 100 + 'x',
+    'render themed': Math.floor((ScConsumeBase / VarsConsumeBase) * 100) / 100 + 'x',
+    'render overidden': Math.floor((ScConsumeOveridden / VarsConsumeOveridden) * 100) / 100 + 'x',
+    'render dynamic props': Math.floor((ScConsumeDynamic / VarsConsumeDynamic) * 100) / 100 + 'x',
+    'deeply nested tree': Math.floor((ScConsumeDeepTree / VarsConsumeDeepTree) * 100) / 100 + 'x',
   },
 });
